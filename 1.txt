@@ -1,0 +1,67 @@
+urls project:
+
+from django.contrib import admin
+from django.urls import path,include
+
+urlpatterns = [
+    path('admin/', admin.site.urls),
+    path('',include('base.urls')),
+]
+
+urls app:
+
+from . views import home
+from django.urls import path , include
+
+urlpatterns = [
+    path('',home,name='home'),
+]
+
+views:
+
+from django.shortcuts import render
+from datetime import datetime,timedelta
+def home(request):
+    now=datetime.now()
+    dt_ahead=now+timedelta(hours=4)
+    dt_before=now-timedelta(hours=4)
+    fruits=["kela","amrudh","chikoo","aaam","seb"]
+    students=["su","ra","ga","vi","ba"]
+
+    context={
+        'now':now,
+        'dt_ahead':dt_ahead,
+        'dt_before':dt_before,
+        'fruits':fruits,
+        'students':students,
+        
+    }
+    return render(request,'home.html',context)
+
+html: 
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>current date and time</title>
+</head>
+<body>
+    <h1>datetime</h1>
+    <p>{{now}}</p>
+    <p>{{dt_ahead}}</p>
+    <p>{{dt_before}}</p>
+    <ul>
+        {%for fruit in fruits%}
+        <li>{{fruit}}</li>
+        {%endfor%}
+        </ul>
+        <ol>
+            {%for student in students%}
+            <li>{{student}}</li>
+            {%endfor%}
+        </ol>
+    </ul>
+</body>
+</html>
